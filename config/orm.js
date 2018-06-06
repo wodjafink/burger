@@ -33,20 +33,13 @@ var orm = {
 	},
 	insertOne: function(burger, callback) {
 		var queryString = "INSERT INTO burgers (burger_name) VALUES (?)";
-		connection.query(queryString, burger.name, function(err, result){
+		connection.query(queryString, burger, function(err, result){
 			callback(result);
 		});
 	},
-	updateOne: function(burger, devoured, callback) {
-		var queryString = "UPDATE burgers";
+	updateOne: function(burger, callback) {
 
-		queryString += " SET ";
-		queryString += objToSql(burger);
-		queryString += " WHERE ";
-		queryString += devoured;
-
-		console.log("Update one " + queryString);
-		connection.query(queryString, function(err,result){
+		connection.query("UPDATE burgers SET ? WHERE ?", [{devoured: true}, {id: burger}], function(err,result){
 			if (err) throw err;
 			callback(result);
 		});
